@@ -79,20 +79,22 @@ kordinat = pd.DataFrame({
 map_df = cluster_features.reset_index().merge(kordinat, on='Location', how='left')
 
 st.subheader("Peta Interaktif Clustering Wilayah")
+map_df['Cluster'] = map_df['Cluster'].astype(str)  # Penting: ubah jadi kategori (string)
+
 fig_map = px.scatter_mapbox(
     map_df,
     lat="lat", lon="lon",
     hover_name="Location",
-    color="Cluster",  # ← tetap pakai Cluster untuk kategorisasi
+    color="Cluster",  # Sekarang dianggap kategori
     size="Total Cases",
     zoom=4,
     height=500,
     mapbox_style="carto-positron",
     color_discrete_map={
-        0: "red",
-        1: "yellow",
-        2: "green",
-        3: "blue"
+        '0': 'red',
+        '1': 'yellow',
+        '2': 'green',
+        '3': 'blue'
     }
 )
 st.plotly_chart(fig_map, use_container_width=True)
