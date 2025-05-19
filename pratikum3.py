@@ -79,7 +79,7 @@ kordinat = pd.DataFrame({
 map_df = cluster_features.reset_index().merge(kordinat, on='Location', how='left')
 
 st.subheader("Peta Interaktif Clustering Wilayah")
-ffig_map = px.scatter_mapbox(
+fig_map = px.scatter_mapbox(
     map_df,
     lat="lat", lon="lon",
     hover_name="Location",
