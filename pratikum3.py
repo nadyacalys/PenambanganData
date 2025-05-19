@@ -78,29 +78,24 @@ kordinat = pd.DataFrame({
 # Gabungkan untuk peta
 map_df = cluster_features.reset_index().merge(kordinat, on='Location', how='left')
 
-def get_severity_color(value):
-    if value > 100000:
-        return 'red'
-    elif value > 50000:
-        return 'orange'
-    elif value > 10000:
-        return 'yellow'
-    else:
-        return 'green'
-
-map_df['Severity Color'] = map_df['Total Cases'].apply(get_severity_color)
-
-st.subheader("Peta Interaktif Clustering Wilayah (Warna = Tingkat Kasus)")
-fig_map = px.scatter_mapbox(
+st.subheader("Peta Interaktif Clustering Wilayah")
+ffig_map = px.scatter_mapbox(
     map_df,
     lat="lat", lon="lon",
     hover_name="Location",
-    color=map_df['Severity Color'],
+    color="Cluster",  # ← tetap pakai Cluster untuk kategorisasi
     size="Total Cases",
     zoom=4,
     height=500,
-    mapbox_style="carto-positron"
+    mapbox_style="carto-positron",
+    color_discrete_map={
+        0: "red",
+        1: "yellow",
+        2: "green",
+        3: "blue"
+    }
 )
+st.plotly_chart(fig_map, use_container_width=True)
 
 # Tampilkan tabel cluster
 st.subheader("Ringkasan Risiko Wilayah Berdasarkan Cluster")
